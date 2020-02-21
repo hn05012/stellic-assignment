@@ -7,13 +7,14 @@ Description
 For this assignment you have to implement a simple calendar that keeps track of reservations for a single room. The backend API you'll use is provided for you in this repository and will keep track of who has the room for which day. The application should have the three main functionalities: adding a tenant to a day, removing a tenant from a day, and moving between months to see all the dates.
 
 The following is a mockup for confirming a stay on the calendar.
-<br>
-<br>
+
+
+
 ![Confirm Stay](images/ConfirmStay.png)
 
 The following is a mockup for cancelling a stay on the calendar.
-<br>
-<br>
+
+
 ![Cancel Stay](images/CancelStay.png)
 
 Getting Started
@@ -140,5 +141,5 @@ Solutions that have extra things too are a plus. You can add a lot to this simpl
 
 Submission
 ----------
-You should upload your code to a Github/Bitbucket repository and share it with us. Your repository should have a README.md that explains how to run the code and if youâ€™ve done anything extra. 
+You should upload your code to a Github/Bitbucket repository and share it with us. Your repository should have a README.md that explains how to run the code and if you’ve done anything extra. 
 
