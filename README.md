@@ -8,12 +8,9 @@ For this assignment you have to implement a simple calendar that keeps track of 
 
 The following is a mockup for confirming a stay on the calendar.
 
-
-
 ![Confirm Stay](images/ConfirmStay.png)
 
 The following is a mockup for cancelling a stay on the calendar.
-
 
 ![Cancel Stay](images/CancelStay.png)
 
@@ -141,5 +138,5 @@ Solutions that have extra things too are a plus. You can add a lot to this simpl
 
 Submission
 ----------
-You should upload your code to a Github/Bitbucket repository and share it with us. Your repository should have a README.md that explains how to run the code and if you’ve done anything extra. 
+You should upload your code to a Github/Bitbucket repository and share it with us. Your repository should have a README.md that explains how to run the code and if youï¿½ve done anything extra. 
 
