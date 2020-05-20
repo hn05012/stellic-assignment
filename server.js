@@ -2,32 +2,32 @@ var _ = require('lodash'),
     express = require('express'),
     bodyParser = require('body-parser'),
     moment = require('moment-timezone');
-
 var app = express();
 var data = require('./init_data.json').data;
 
 // Parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
 // Stub data
-var locale = "Asia/Dubai";
+var locale = 'Asia/Dubai';
 
 // Probably not the safest way to handle CORS
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
+    res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT');
-    res.header("Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept");
+    res.header(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept'
+    );
     next();
 });
 
 // Wrapper to send data with max latency of 1 second
 function send(response, data) {
     setTimeout(function() {
-        response.send(JSON.stringify(data))
+        response.send(JSON.stringify(data));
     }, Math.floor(Math.random() * 1000));
 }
-
 
 // End-point to get booked nights
 // * start and end are integers (seconds since Unix epoch)
@@ -42,7 +42,7 @@ app.get('/reserve/:start/:end', function(request, response) {
     }
 
     var reserved = _.filter(data, function(night) {
-        var nightTime = night["time"];
+        var nightTime = night['time'];
         return nightTime >= start && nightTime <= end;
     });
 
@@ -64,16 +64,27 @@ app.post('/reserve', function(request, response) {
         var reserved = body.reserved;
         var name = body.tennantName;
 
-        date = moment.unix(date).tz(locale).startOf('day').unix();
+        date = moment
+            .unix(date)
+            .tz(locale)
+            .startOf('day')
+            .unix();
+        friendlyTime = moment
+            .unix(date)
+            .tz(locale)
+            .startOf('day')
+            .format('YYYY-MM-DD HH:mm')
 
         var tennantData = {
-            "tennantName": name,
-            "time": date
+            tennantName: name,
+            time: date,
+            //friendlyTime: friendlyTime
         };
 
         var isReserved = _.filter(data, function(night) {
-            var nightTime = night["time"];
-            return date == nightTime;
+            var nightTime = night['time'];
+            // Check if passed timestamp is of same day, since reservations are for complete day
+            return moment.unix(date).isSame(moment.unix(nightTime), 'day');
         }).length;
 
         console.log(isReserved);
@@ -93,8 +104,11 @@ app.post('/reserve', function(request, response) {
         if (reserved) {
             data.push(tennantData);
         } else {
-            _.remove(data, (currentObject) => {
-                return tennantData.time == currentObject.time;
+            _.remove(data, currentObject => {
+                // Check if passed timestamp is of same day, since reservations are for complete day
+                return moment
+                    .unix(tennantData.time)
+                    .isSame(moment.unix(currentObject.time), 'day');
             });
         }
 
@@ -108,11 +122,17 @@ app.post('/reserve', function(request, response) {
 
 // Get server time
 app.get('/now', function(request, response) {
+    // Since UNIX timestamp would be the same for server and client browser,
+    // returning the exact time of server. In this case fixed it to dubai instead of local.
     send(response, {
-        time: moment(new Date()).unix()
+        time: moment(new Date()).unix(),
+        // friendlyTime: moment()
+        //     .tz(locale)
+        //     .format('YYYY-MM-DD HH:mm'),
+        timeZone: locale
     });
 });
 
 var port = 3000;
-console.info("API server listening at http://localhost:" + port)
+console.info('API server listening at http://localhost:' + port);
 app.listen(port);
