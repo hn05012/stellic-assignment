@@ -126,7 +126,7 @@ In this assignment we would like to see the following:
 - Clean commit history that reveal the evolution of this application
 - If the code is opened in different pages there is bound to be race conditions which will lead to some errors; your code should handle that gracefully.
 
-Remember, you can contact rukhsar@stellic.com for any clarifications and/or help. **You will not be penalized at all for asking questions.**
+Remember, you can contact tech-help-frontend@stellic.com for any clarifications and/or help. **You will not be penalized at all for asking questions.**
 
 Keep in mind
 ------------
