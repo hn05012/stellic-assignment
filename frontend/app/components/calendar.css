@@ -1,0 +1,12 @@
+/* Styles for the chevron icons */
+.glyphicon-chevron-left,
+.glyphicon-chevron-right {
+  cursor: pointer;
+  transition: background-color 0.3s; /* Add transition effect for smooth color change */
+}
+
+/* Styles for the chevron icons when hovered over */
+.glyphicon-chevron-left:hover,
+.glyphicon-chevron-right:hover {
+  background-color: gray; /* Change background color to gray */
+}

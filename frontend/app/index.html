@@ -1,12 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" ng-app>
+<html lang="en" ng-app="calendarApp">
   <head>
     <meta charset="utf-8" />
-    <title>My HTML File</title>
-    <link rel="stylesheet" href="./lib/bootstrap/dist/css/bootstrap.css" />
-    <script src="./lib/angular/angular.js"></script>
+    <title>Calendar App</title>
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="components/calendar.css" />
+    <script src="lib/angular/angular.js"></script>
+    <script src="app.module.js"></script>
+    <script src="components/calendar.component.js"></script>
+    <script src="data/calendarData.js"></script>
   </head>
   <body>
-    <p>Nothing here {{'yet' + '!'}}</p>
+    <grid-display></grid-display>
   </body>
 </html>
