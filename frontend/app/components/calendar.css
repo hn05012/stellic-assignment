@@ -10,3 +10,7 @@
 .glyphicon-chevron-right:hover {
   background-color: gray; /* Change background color to gray */
 }
+
+.calendar-hover:hover {
+  cursor: pointer;
+}

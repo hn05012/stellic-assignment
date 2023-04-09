@@ -6,14 +6,16 @@ angular.module("calendarApp", []).directive("gridDisplay", function () {
     templateUrl: "components/calendar.template.html",
     controller: function ($scope) {
       var monthIndex = 0;
+      $scope.year = 2023;
+      $scope.selectedItemLabel = "";
+      $scope.isDivOpen = false;
       $scope.month = Object.keys(data)[monthIndex];
+      $scope.data = data[Object.keys(data)[monthIndex]];
 
       // Calculate number of items per row
-      var itemsPerRow = 7;
-      $scope.data = data[Object.keys(data)[monthIndex]];
-      var numRows = Math.ceil($scope.data.length / itemsPerRow);
-
       function getMonthData(month) {
+        var itemsPerRow = 7;
+        var numRows = Math.ceil($scope.data.length / itemsPerRow);
         $scope.rows = [];
         for (var i = 0; i < numRows; i++) {
           var row = [];
@@ -27,6 +29,10 @@ angular.module("calendarApp", []).directive("gridDisplay", function () {
         }
       }
 
+      function dateToUnixStamp(day, month, year) {
+        return Math.floor(new Date(year, month, day).getTime() / 1000);
+      }
+
       getMonthData(data.jan);
 
       // Click event handler for chevron left button
@@ -34,6 +40,7 @@ angular.module("calendarApp", []).directive("gridDisplay", function () {
         monthIndex--;
         if (monthIndex < 0) {
           monthIndex = Object.keys(data).length - 1;
+          $scope.year--;
         }
         $scope.month = Object.keys(data)[monthIndex];
         $scope.data = data[Object.keys(data)[monthIndex]];
@@ -45,10 +52,22 @@ angular.module("calendarApp", []).directive("gridDisplay", function () {
         monthIndex++;
         if (monthIndex >= Object.keys(data).length) {
           monthIndex = 0;
+          $scope.year++;
         }
         $scope.month = Object.keys(data)[monthIndex];
         $scope.data = data[Object.keys(data)[monthIndex]];
         getMonthData($scope.data);
+      };
+
+      $scope.getItemLabel = function (label) {
+        $scope.isDivOpen = true;
+        $scope.selectedItemLabel = label;
+        console.log(dateToUnixStamp(label, monthIndex, $scope.year));
+      };
+
+      $scope.closeDiv = function () {
+        $scope.isDivOpen = false;
+        $scope.selectedItemLabel = "";
       };
     },
   };
