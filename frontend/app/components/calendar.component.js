@@ -31,11 +31,19 @@ angular.module("calendarApp", []).directive("gridDisplay", function () {
           for (var j = 0; j < itemsPerRow; j++) {
             var index = i * itemsPerRow + j;
             if (index < month.length) {
-              row.push(month[index]);
+              const date = new Date(
+                $scope.year,
+                monthIndex,
+                month[index].label
+              );
+              const options = { weekday: "long" };
+              const dayName = date.toLocaleDateString(undefined, options);
+              row.push({ ...month[index], dayName });
             }
           }
           $scope.rows.push(row);
         }
+        console.log($scope.rows);
       }
 
       function dateToUnixStamp(day, month, year) {
