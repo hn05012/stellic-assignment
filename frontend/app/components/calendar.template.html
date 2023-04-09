@@ -79,8 +79,8 @@
     <div
       ng-if="isDivOpen"
       style="
-        width: 200px;
-        height: 100px;
+        width: 300px;
+        height: 200px;
         border: 1px solid black;
         display: flex;
         flex-direction: row;
@@ -88,16 +88,51 @@
         align-items: flex-start;
       "
     >
-      <div style="padding: 20px">
-        <!-- Content of the div to be displayed on the right side -->
-        <p>This is a div opened towards the right side!</p>
-        <p>Item label: {{selectedItemLabel}}</p>
+      <div
+        style="padding: 20px; font-size: 16px"
+        ng-if="!checkReservation(day)"
+      >
+        Tenant Name:
+        <input
+          type="text"
+          ng-model="username"
+          style="width: 140px"
+          placeholder="Enter tenant name"
+          class="username-input"
+        />
+        <div style="height: 20px"></div>
+        <p>Stay date: {{day}} {{month}}</p>
+        <button
+          class="btn btn-primary"
+          style="background-color: aqua; color: black; font-size: 16px"
+          ng-click="confirmStay(day, username)"
+        >
+          Confirm Stay
+        </button>
+        <span
+          class="glyphicon glyphicon-remove"
+          ng-click="closeDiv()"
+          style="cursor: pointer"
+        ></span>
       </div>
-      <span
-        class="glyphicon glyphicon-remove"
-        ng-click="closeDiv()"
-        style="cursor: pointer"
-      ></span>
+      <div style="padding: 20px; font-size: 16px" ng-if="checkReservation(day)">
+        Tenant Name: {{reservationDetails.tennantName}}
+        <div style="height: 20px"></div>
+        <p>Stay date: {{day}} {{month}}</p>
+        <button
+          class="btn btn-primary"
+          style="background-color: red; color: black; font-size: 16px"
+          ng-click="cancelStay(day, username)"
+        >
+          Cancel Stay
+        </button>
+
+        <span
+          class="glyphicon glyphicon-remove"
+          ng-click="closeDiv()"
+          style="cursor: pointer"
+        ></span>
+      </div>
     </div>
   </div>
 </div>

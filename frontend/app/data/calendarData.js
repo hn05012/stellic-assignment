@@ -198,7 +198,7 @@ const data = {
     { label: "30", date: "30" },
   ],
 
-  july: [
+  jul: [
     { label: "1", date: "1" },
     { label: "2", date: "2" },
     { label: "3", date: "3" },

@@ -14,3 +14,8 @@
 .calendar-hover:hover {
   cursor: pointer;
 }
+
+.username-input::placeholder {
+  font-size: 14px; /* Set the desired font size for the placeholder text */
+  /* Add any other desired styles for the placeholder text */
+}
