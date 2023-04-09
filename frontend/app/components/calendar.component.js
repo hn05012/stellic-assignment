@@ -5,22 +5,26 @@ angular.module("calendarApp", []).directive("gridDisplay", function () {
     restrict: "E",
     templateUrl: "components/calendar.template.html",
     controller: function ($scope, $http) {
+      // controls the visibility of the reservation box
+      $scope.isDivOpen = false;
+
       var monthIndex = 0;
       $scope.username = "";
       $scope.year = 2023;
       $scope.day = "";
-      $scope.isDivOpen = false;
+
+      // data is an object with keys as month names and values as arrays of days. referenced from data/data.js
       $scope.month = Object.keys(data)[monthIndex];
-      $scope.data = data[Object.keys(data)[monthIndex]];
+      $scope.monthData = data[Object.keys(data)[monthIndex]];
       $scope.reservationArray;
       $scope.reservationDetails = {};
       $scope.reservationName = "";
       $scope.reservationDate = "";
 
-      // Calculate number of items per row
+      // Calculate number of items/boxes per row
       function getMonthData(month) {
         var itemsPerRow = 7;
-        var numRows = Math.ceil($scope.data.length / itemsPerRow);
+        var numRows = Math.ceil($scope.monthData.length / itemsPerRow);
         $scope.rows = [];
         for (var i = 0; i < numRows; i++) {
           var row = [];
@@ -95,8 +99,8 @@ angular.module("calendarApp", []).directive("gridDisplay", function () {
           $scope.year--;
         }
         $scope.month = Object.keys(data)[monthIndex];
-        $scope.data = data[Object.keys(data)[monthIndex]];
-        getMonthData($scope.data);
+        $scope.monthData = data[Object.keys(data)[monthIndex]];
+        getMonthData($scope.monthData);
       };
 
       // Click event handler for chevron right button
@@ -107,11 +111,11 @@ angular.module("calendarApp", []).directive("gridDisplay", function () {
           $scope.year++;
         }
         $scope.month = Object.keys(data)[monthIndex];
-        $scope.data = data[Object.keys(data)[monthIndex]];
-        getMonthData($scope.data);
+        $scope.monthData = data[Object.keys(data)[monthIndex]];
+        getMonthData($scope.monthData);
       };
 
-      $scope.getItemLabel = function (label) {
+      $scope.getItemDay = function (label) {
         $scope.isDivOpen = true;
         $scope.day = label;
         $scope.checkReservation(label);
@@ -129,7 +133,7 @@ angular.module("calendarApp", []).directive("gridDisplay", function () {
           .then(() => {
             return $scope.fetchReservations(
               dateToUnixStamp(1, monthIndex, $scope.year),
-              dateToUnixStamp($scope.data.length, monthIndex, $scope.year)
+              dateToUnixStamp($scope.monthData.length, monthIndex, $scope.year)
             );
           })
           .then(() => {
@@ -145,7 +149,7 @@ angular.module("calendarApp", []).directive("gridDisplay", function () {
           .then(() => {
             return $scope.fetchReservations(
               dateToUnixStamp(1, monthIndex, $scope.year),
-              dateToUnixStamp($scope.data.length, monthIndex, $scope.year)
+              dateToUnixStamp($scope.monthData.length, monthIndex, $scope.year)
             );
           })
           .then(() => {
@@ -161,16 +165,11 @@ angular.module("calendarApp", []).directive("gridDisplay", function () {
           time: time,
           reserved: reserved,
         };
-        return (
-          $http
-            .post("http://localhost:3000/reserve", reserveData)
-            // .then(function (response) {
-            //   console.log("Reservation successful:", response.data);
-            // })
-            .catch(function (error) {
-              console.error("Error making reservation:", error);
-            })
-        );
+        return $http
+          .post("http://localhost:3000/reserve", reserveData)
+          .catch(function (error) {
+            console.error("Error making reservation:", error);
+          });
       };
 
       $scope.fetchReservations = function (startTime, endTime) {
@@ -189,7 +188,7 @@ angular.module("calendarApp", []).directive("gridDisplay", function () {
       getMonthData(data.jan);
       $scope.fetchReservations(
         dateToUnixStamp(1, monthIndex, $scope.year),
-        dateToUnixStamp($scope.data.length, monthIndex, $scope.year)
+        dateToUnixStamp($scope.monthData.length, monthIndex, $scope.year)
       );
     },
   };
