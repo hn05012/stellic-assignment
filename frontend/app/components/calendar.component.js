@@ -124,21 +124,34 @@ angular.module("calendarApp", []).directive("gridDisplay", function () {
 
       $scope.confirmStay = function (day, username) {
         var date = dateToUnixStamp(day, monthIndex, $scope.year);
-        console.log("in unix stamp", date);
-        $scope.reserve(username, date, true);
-        $scope.fetchReservations(
-          dateToUnixStamp(1, monthIndex, $scope.year),
-          dateToUnixStamp($scope.data.length, monthIndex, $scope.year)
-        );
+        $scope
+          .reserve(username, date, true)
+          .then(() => {
+            return $scope.fetchReservations(
+              dateToUnixStamp(1, monthIndex, $scope.year),
+              dateToUnixStamp($scope.data.length, monthIndex, $scope.year)
+            );
+          })
+          .then(() => {
+            $scope.checkReservation(day);
+            $scope.closeDiv();
+          });
       };
 
       $scope.cancelStay = function (day, username) {
         var date = dateToUnixStamp(day, monthIndex, $scope.year);
-        $scope.reserve(username, date, false);
-        $scope.fetchReservations(
-          dateToUnixStamp(1, monthIndex, $scope.year),
-          dateToUnixStamp($scope.data.length, monthIndex, $scope.year)
-        );
+        $scope
+          .reserve(username, date, false)
+          .then(() => {
+            return $scope.fetchReservations(
+              dateToUnixStamp(1, monthIndex, $scope.year),
+              dateToUnixStamp($scope.data.length, monthIndex, $scope.year)
+            );
+          })
+          .then(() => {
+            $scope.checkReservation(day);
+            $scope.closeDiv();
+          });
       };
 
       $scope.reserve = function (tennantName, time, reserved) {
@@ -148,19 +161,21 @@ angular.module("calendarApp", []).directive("gridDisplay", function () {
           time: time,
           reserved: reserved,
         };
-        $http
-          .post("http://localhost:3000/reserve", reserveData)
-          .then(function (response) {
-            console.log("Reservation successful:", response.data);
-          })
-          .catch(function (error) {
-            console.error("Error making reservation:", error);
-          });
+        return (
+          $http
+            .post("http://localhost:3000/reserve", reserveData)
+            // .then(function (response) {
+            //   console.log("Reservation successful:", response.data);
+            // })
+            .catch(function (error) {
+              console.error("Error making reservation:", error);
+            })
+        );
       };
 
       $scope.fetchReservations = function (startTime, endTime) {
         var url = "http://localhost:3000/reserve/" + startTime + "/" + endTime;
-        $http
+        return $http
           .get(url)
           .then(function (response) {
             $scope.reservationArray = response.data.reserved;
