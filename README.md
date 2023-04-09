@@ -2,7 +2,7 @@
 
 ## Description
 
-This assignment implements a simple calender reservation system where the user can reserve and cancel reservations for a single room. The front is built using **angular js** version@1.4 and the backend is implemented using express framework version @4.9. The calendar view is created using vanilla JS and bootstrap for styling
+This assignment implements a simple calender reservation system where the user can reserve and cancel reservations for a single room. The front is built using **angular js** version@1.4 and the backend is implemented using express framework version @4.9. The calendar view is created using vanilla JS and bootstrap is used for styling
 
 The following is a mockup for confirming a stay on the calendar.
 
@@ -118,5 +118,3 @@ Accept: application/json
 - Extend the calendar view to include leap years
 - add a background color on the selected calendar box
 - reserve multiple rooms in one go
-
--
